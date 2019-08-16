@@ -5,6 +5,11 @@ import json
 import fileops
 
 def checkURL(url):
+    """ Check if the url domain is IMDB
+
+    :param url: String: Passing in the url to check
+    :return: Boolean: True if is IMDB domain
+    """
     if "imdb.com" in url:
         return True
     else:
@@ -12,44 +17,75 @@ def checkURL(url):
 
 
 def formatURL(url):
-    pattern = r'(imdb\.com\/title\/(.*/))'
+    """ Formats the given url so it any leading characters are displaced
 
+    :param url: String: url of IMDB film page
+    :return: String: returns a formatted url
+    """
+    pattern = r'(imdb\.com\/title\/(.*/))'
     urls = re.findall(pattern,url)
     urls = urls[0]
     new_url = urls[0]
     new_url = "https://www."+new_url
     title_code = urls[1].replace("/","")
-
-    print(new_url, title_code)
     return new_url
 
+def formatRuntime(duration):
+    """ Converts duration from format: 'PThhHmmM' to 'mmm mins'
+
+    :param duration:  String: duration given in Hours and Minutes
+    :return: String duration is now all in minutes
+    """
+    pass
+
 def getSoup(url):
+    """ Gets the BeautifulSoup object of a webpage when parsed in URL.
+
+    :param url: String: url of IMDB film page
+    :return: BeautifulSoup object: Contains html code for web page
+    """
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     return soup
 
 def getCountry(soup):
+    """ Extracts the country of origin for film by finding it in Details section of page
+
+    :param soup: BeautifulSoup object: contains html code for web page
+    :return: List: returns a list containing Strings of country/countries the film was produced in
+    """
     title_details = getAdditionalDetails(soup)
-    country = title_details[1].get_text().replace("Country:", "").strip()
+    pattern = r'country_of_origin.*?>(.*?)<'
+    country = re.findall(pattern,str(title_details))
     return country
 
-def getRuntime(soup):
-    title_details = getAdditionalDetails(soup)
-    duration = title_details[12].get_text().replace("Runtime:", "").strip()
-    return duration
-
 def getAdditionalDetails(soup):
+    """ Returns Details section of IMDB film page
+
+    :param soup: BeautifulSoup object: contains html code for web page
+    :return: BeautifulSoup object: contains small section of page
+    """
     title_details = soup.find('div', id="titleDetails")
     title_details = title_details.findAll('div', class_="txt-block")
     return title_details
 
 def getJson(soup):
+    """ Retrieve JSON file located in the scripts tag which is present in all film pages
+
+    :param soup: BeautifulSoup object: contains html code for web page
+    :return: Dictionary: contains details of film from given web page
+    """
     script = soup.find('script', type='application/ld+json')
     json_text = BeautifulSoup.get_text(script)
     print(json_text)
     return json.loads(json_text)
 
 def getPeopleNames(the_list):
+    """ Retrieve a single name or list of names from Director/Writer/Actor in JSON file
+
+    :param the_list: List: contains dictionary of persons or others
+    :return: List: returns a list of String containing only names.
+    """
     new_list = []
     if type(the_list) == list:
         for person in the_list:
@@ -60,6 +96,12 @@ def getPeopleNames(the_list):
     return new_list
 
 def getFields(mov_dict, soup):
+    """ Get all fields required for a single film record.
+
+    :param mov_dict: Dictionary: JSON text containg film information retrieved from web page
+    :param soup: BeautifulSoup object: contains html code for web page
+    :return: Dictionary: containing all fields and values of the record added
+    """
     film = {}
 
     title = mov_dict['name']
@@ -70,7 +112,7 @@ def getFields(mov_dict, soup):
     year = date[0:4]
     print(year)
 
-    duration = getRuntime(soup)
+    duration = mov_dict['duration']
     print(duration)
 
     age_rating = mov_dict['contentRating']
@@ -123,6 +165,11 @@ def getFields(mov_dict, soup):
 
 
 def retrieveData(url):
+    """ Contains ordered instructions for each method to be run
+
+    :param url: String: URL given via app.py
+    :return: None
+    """
     if checkURL(url) == False:
         return None
     url = formatURL(url)
@@ -131,7 +178,6 @@ def retrieveData(url):
     more = getAdditionalDetails(soup)
     film = getFields(json,soup)
     fileops.saveToFile(film)
-    pass
 
 
 def main():
@@ -141,8 +187,11 @@ def main():
     silverliningsplaybook = "https://www.imdb.com/title/tt1045658/?ref_=tt_sims_tt"
     daysofsummer = "https://www.imdb.com/title/tt1022603/?ref_=tt_sims_tt"
     oldboy = "https://www.imdb.com/title/tt0364569/?ref_=nv_sr_1?ref_=nv_sr_1"
+    lobster = "https://www.imdb.com/title/tt3464902/?ref_=rt_li_tt"
+    fivecm = "https://www.imdb.com/title/tt0983213/?ref_=tt_sims_tt"
+    gardenwords = "https://www.imdb.com/title/tt2591814/?ref_=tt_sims_tt"
 
-    retrieveData(oldboy)
+    retrieveData(gardenwords)
 
 if __name__=="__main__":
     main()

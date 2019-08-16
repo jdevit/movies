@@ -12,24 +12,14 @@ def readFile(filename,delimeter):
     contents = contents.split(delimeter)
     return contents
 
-def readCSV(filename):
-    with open(filename, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        line_count = 0
-        x = ""
-        for row in csv_reader:
-            print(row)
-            if line_count == 0:
-                # print(f'Column names are {", ".join(row)}')
-                line_count += 1
-            line_count += 1
-        # print(f'Processed {line_count} lines.')
-    print(x)
-    return csv_reader
-
 def writeFile(filename, film):
+    """ Output contents from film dictionary to a csv file
+
+    :param filename:    String: name of the csv file to be written
+    :param film:        Dictionary: Contains values of each field of a film
+    :return: None
+    """
     file = open(filename, 'a')
-    line = ""
     values = getListFieldValues(film)
     for val in values:
         if val==values[-1]:
@@ -53,6 +43,11 @@ def getListFieldValues(film):
     return values
 
 def saveToFile(film):
+    """ Writes to file by calling the writeFile method
+
+    :param film: Dictionary: contains attribute values for a given film
+    :return: None
+    """
     filename = "movielist.csv"
     writeFile(filename,film)
 
