@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--     <link rel="stylesheet" href="{{ css }}">
+    <script type="text/javascript" src="{{ scripts_js }}"></script> -->
+
+    <!--    Bootstrap   -->
+<!--     <link rel="stylesheet" type="text/css" href="{{ bootstrap_css }}"/>
+    <script src="{{ bootstrap_js }}"></script> -->
+    <link rel="stylesheet" href="static/styles.css">
+    <script type="text/javascript" src="static/scripts.js"></script>
+
+    <!--    Bootstrap   -->
+    <link rel="stylesheet" type="text/css" href="static/bootstrap.css"/>
+    <script src="static/bootstrap.js"></script>
+
+    <title>Add your movie</title>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <a href="home.html" class="text-light"><h1>Movies</h1></a>
+
+    </nav>
+
+    <section class="main-content">
+        
+        <div class="container justify-content-center p-3">
+            <div class="align-self-center">
+                
+                <div class="row">
+                    <h2>Add a movie</h2>
+                </div>
+
+                <div class="row">
+                    <form class="form-inline" method="GET" action="/get_imdb_url"/>
+
+                        <div class="form-group mx-2"> 
+                            <label for="url">IMDB url:</label>
+                        </div>
+                        <div class="form-group mx-2">
+                            <input type="text" class="form-control" name="url" required>
+                        </div>
+                        <div class="form-group mx-2">
+                            <a class="btn btn-info text-light" type="submit">Add</a>
+                        </div>
+                                            
+                    </form>
+                </div>
+
+                
+
+            </div>
+
+        </div>
+
+    
+
+
+    </section>
+
+
+</body>
+
+<footer class="bg-dark text-light p-5">
+
+    <div class="row justify-content-center">
+        <div class="col-1 text-center">Contact</div>
+        <div class="col-1 text-center">Site</div>
+        <div class="col-1 text-center">Telephone</div>
+    </div>
+
+    <div class="row justify-content-center">---</div>
+    
+    <div class="row justify-content-center">
+        © Movit 2020
+    </div>
+    
+    
+</footer>
+</html>
