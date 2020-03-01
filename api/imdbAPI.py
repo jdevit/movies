@@ -10,7 +10,6 @@ class ImdbAPI:
         self.url = url
         self.film = {}
 
-    @staticmethod
     def get_movie_details(self):
         """ Contains ordered instructions for each method to be run
 
@@ -82,7 +81,6 @@ class ImdbAPI:
         """
         script = soup.find('script', type='application/ld+json')
         json_text = BeautifulSoup.get_text(script)
-        print(json_text)
         return json.loads(json_text)
 
 
@@ -95,7 +93,7 @@ class ImdbAPI:
         :return: Dictionary: containing all fields and values of the record added
         """
 
-        def getPeopleNames(self, the_list):
+        def getPeopleNames(the_list):
             """ Retrieve a single name or list of names from Director/Writer/Actor in JSON file
 
             :param the_list: List: contains dictionary of persons or others
@@ -110,7 +108,7 @@ class ImdbAPI:
                 new_list.append(the_list['name'])
             return new_list
 
-        def getCountry(self, soup):
+        def getCountry(soup):
             """ Extracts the country of origin for film by finding it in Details section of page
 
             :param soup: BeautifulSoup object: contains html code for web page
